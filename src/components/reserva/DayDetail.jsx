@@ -37,8 +37,14 @@ export default function DayDetail({ day, onChangeTab }) {
           <dd>{day.menu.sopa}</dd>
           <dt>Entrada</dt>
           <dd>{day.menu.entrada}</dd>
-          <dt>Fondo</dt>
+          <dt>{day.menu.fondoB ? 'Fondo A' : 'Fondo'}</dt>
           <dd>{day.menu.fondo}</dd>
+          {day.menu.fondoB && (
+            <>
+              <dt>Fondo B</dt>
+              <dd>{day.menu.fondoB}</dd>
+            </>
+          )}
           <dt>Vegetariano</dt>
           <dd>{day.menu.vegetariano}</dd>
           <dt>Hipocalórico</dt>

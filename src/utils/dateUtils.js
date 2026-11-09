@@ -1,4 +1,4 @@
-export const REFERENCE_TODAY = new Date(2026, 8, 1); // 1 de Septiembre 2026
+export const REFERENCE_TODAY = new Date(2026, 10, 10); // 10 de Noviembre 2026
 
 export function parseDate(str) {
   const [d, m, y] = str.split('-').map(Number);
