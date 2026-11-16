@@ -45,15 +45,18 @@
 
   /* ---------- Vista Login ---------- */
   .login-container {
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 24px;
+    padding: clamp(12px, 2dvh, 24px);
   }
 
   .login-box {
+    --login-preferred-scale: 1.5;
+    flex-shrink: 0;
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -62,6 +65,7 @@
     max-width: 440px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
     text-align: center;
+    zoom: var(--login-scale, var(--login-preferred-scale));
   }
 
   .login-box h2 {
@@ -260,8 +264,8 @@
     background: transparent;
     border: none;
     color: var(--primary-soft);
-    padding: 14px 18px;
-    font-size: 0.95rem;
+    padding: 16px 22px;
+    font-size: 1.05rem;
     font-weight: 600;
     cursor: pointer;
     border-bottom: 3px solid transparent;
@@ -280,11 +284,11 @@
     background: transparent;
     border: 1.5px solid var(--primary-soft);
     color: var(--primary-soft);
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: all .2s;
     font-family: inherit;
@@ -296,18 +300,27 @@
 
   /* ---------- Layout Contenedor ---------- */
   .wrap {
-    max-width: 1080px;
+    max-width: 1750px;
+    width: 100%;
     margin: 0 auto;
-    padding: 32px 24px 160px;
+    padding: 24px 32px 60px;
+  }
+
+  .wrap:has(#view-reserva) {
+    max-width: 1960px;
+  }
+
+  #view-reserva {
+    zoom: 1.12;
   }
 
   .view { display: none; }
   .view.active { display: block; }
 
   /* ---------- Encabezados de Vista ---------- */
-  .page-head h1 { font-family: var(--serif); font-size: 1.8rem; font-weight: 600; margin: 0; }
-  .page-head .campus { margin: 4px 0 0; font-size: 0.95rem; color: var(--primary); font-weight: 600; }
-  .page-head .lede { margin: 10px 0 0; max-width: 680px; color: var(--ink-soft); font-size: 0.92rem; }
+  .page-head h1 { font-family: var(--serif); font-size: 2.1rem; font-weight: 700; margin: 0; }
+  .page-head .campus { margin: 4px 0 0; font-size: 1.05rem; color: var(--primary); font-weight: 600; }
+  .page-head .lede { margin: 10px 0 0; max-width: 720px; color: var(--ink-soft); font-size: 0.98rem; line-height: 1.5; }
 
   /* ---------- Tarjetas de Saldo ---------- */
   .balance-cards {
@@ -426,48 +439,410 @@
     border-radius: var(--radius);
   }
   .legend-item {
-    display: flex; align-items: center; gap: 7px;
-    font-size: 0.85rem; color: var(--ink-soft);
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.92rem; color: var(--ink-soft); font-weight: 500;
   }
-  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
   .dot-general { background: var(--border); }
   .dot-veg { background: var(--veg); }
   .dot-hipo { background: var(--hipo); }
   .dot-past { background: var(--disabled); }
 
   /* ---------- Semanas y Calendario ---------- */
-  .week { margin-bottom: 32px; }
+  .week { margin-bottom: 28px; }
   .week-head {
     display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 14px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 8px;
+    padding-bottom: 12px;
     flex-wrap: wrap;
   }
-  .week-head h2 { font-size: 1.2rem; font-weight: 600; margin: 0; }
-  .week-range { font-size: 0.85rem; color: var(--ink-soft); }
+
+  .week-title-nav-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .week-title-text {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .week-title-text h2 {
+    font-size: 1.55rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .week-title-text .week-range {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+
+  .week-switch-arrows {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-panel);
+    padding: 3px 6px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+  }
+
+  .btn-week-arrow {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--primary);
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .btn-week-arrow:hover:not(:disabled) {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+    transform: scale(1.08);
+  }
+
+  .btn-week-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
 
   .week-actions {
-    margin-left: auto;
     display: flex;
-    gap: 6px;
+    gap: 8px;
     flex-wrap: wrap;
   }
+
   .week-quick {
     background: transparent;
-    border: 1px solid var(--border);
-    color: var(--ink-soft);
-    padding: 5px 10px;
+    border: 1.5px solid var(--border);
+    color: var(--ink);
+    padding: 6px 14px;
     border-radius: 999px;
-    font-size: 0.72rem;
+    font-size: 0.82rem;
     font-weight: 600;
     cursor: pointer;
     font-family: inherit;
     transition: all .15s;
   }
-  .week-quick:hover { border-color: var(--primary); color: var(--primary); }
+
+  .week-quick:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-soft);
+  }
+
+  /* ---------- Grilla de 5 Días de la Semana ---------- */
+  .week-days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 10px;
+    width: 100%;
+  }
+
+  /* ---------- Layout Unificado (2 Columnas) ---------- */
+  .unified-reserva-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2.15fr) minmax(340px, 1fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  @media (max-width: 1400px) {
+    .unified-reserva-layout {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+
+  .unified-left-col {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .unified-left-col #calendar,
+  .unified-left-col .week {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .unified-left-col .week {
+    margin-bottom: 0;
+  }
+
+  .unified-left-col .week-days-grid {
+    flex: 1;
+  }
+
+  .unified-right-col {
+    min-width: 0;
+    position: relative;
+  }
+
+  @media (max-width: 1400px) {
+    .unified-right-col {
+      height: 600px;
+    }
+  }
+
+  /* ---------- Panel Derecho de Reservas ---------- */
+  .reservas-panel-box {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+  }
+
+  .reservas-panel-header {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .reservas-panel-title-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .reservas-panel-title-area h2 {
+    font-family: var(--serif);
+    font-size: 1.85rem;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  .reservas-active-badge {
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: var(--primary-soft);
+    color: var(--primary);
+    padding: 4px 14px;
+    border-radius: 999px;
+  }
+
+  /* Botón Hero de Confirmar Reservas (Máxima Jerarquía) */
+  .btn-confirm-hero {
+    position: relative;
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 10px;
+    background: #7a8a83;
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 13px 26px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: not-allowed;
+    transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+    font-family: inherit;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  .btn-confirm-hero.has-pending {
+    background: #1b6d5c;
+    color: var(--white);
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(27, 109, 92, 0.45);
+    animation: pulse-hero 2s infinite;
+  }
+
+  .btn-confirm-hero.has-pending:hover {
+    background: #145246;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(27, 109, 92, 0.55);
+  }
+
+  @keyframes pulse-hero {
+    0% { box-shadow: 0 0 0 0 rgba(27, 109, 92, 0.55); }
+    70% { box-shadow: 0 0 0 9px rgba(27, 109, 92, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(27, 109, 92, 0); }
+  }
+
+  .btn-confirm-icon {
+    font-size: 1.25rem;
+    font-weight: 900;
+  }
+
+  .reservas-table-toolbar {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .reservas-table-toolbar .form-input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .btn-clear-pending {
+    background: transparent;
+    border: none;
+    color: var(--danger);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+  }
+  .btn-clear-pending:hover:not(:disabled) { color: #801d1d; }
+  .btn-clear-pending:disabled { color: var(--disabled); cursor: not-allowed; }
+
+  /* Tabla de reservas compacta */
+  .reservas-table-container {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .compact-table th {
+    padding: 11px 14px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  .compact-table td {
+    padding: 12px 14px;
+    font-size: 0.92rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .reserva-row-pending td {
+    background: #eef6f3;
+  }
+
+  .reserva-state-code {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .reserva-status {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .reserva-status.is-pending {
+    background: var(--hipo-soft);
+    color: var(--hipo);
+  }
+
+  .reserva-status.is-confirmed {
+    background: var(--veg-soft);
+    color: var(--veg);
+  }
+
+  .reserva-previous-menu {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+
+  .badge-menu {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .badge-menu.veg {
+    background: var(--veg-soft);
+    color: var(--veg);
+  }
+  .badge-menu.hipo {
+    background: var(--hipo-soft);
+    color: var(--hipo);
+  }
+
+  .reserva-code-tag {
+    font-size: 0.85rem;
+    padding: 3px 8px;
+    background: #f0f0ea;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: 600;
+  }
+
+  .reservas-info {
+    flex-shrink: 0;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  .reservas-info h3 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  .reservas-info .info-content {
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .reservas-info p {
+    margin: 4px 0;
+  }
 
   .day-grid {
     display: grid;
@@ -507,10 +882,14 @@
     border: 1px solid var(--border);
     border-left: 4px solid var(--border);
     border-radius: var(--radius);
-    padding: 14px;
+    padding: 16px 12px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    height: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+    overflow: hidden;
     transition: border-color .2s ease, box-shadow .2s ease, transform .15s ease, background .2s ease;
   }
   .day-card:focus-visible { box-shadow: 0 0 0 3px var(--primary-soft); }
@@ -532,15 +911,14 @@
   }
   .day-card.has-pending {
     border-style: dashed;
-    border-width: 2px;
   }
 
   .day-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
-  .day-date { display: flex; align-items: baseline; gap: 7px; }
-  .day-name { font-size: 0.82rem; color: var(--ink-soft); font-weight: 500; }
-  .day-num { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; line-height: 1; }
+  .day-date { display: flex; align-items: baseline; gap: 8px; }
+  .day-name { font-size: 0.92rem; color: var(--ink-soft); font-weight: 600; }
+  .day-num { font-family: var(--serif); font-size: 1.6rem; font-weight: 700; line-height: 1; }
 
-  .badge { font-size: 0.7rem; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+  .badge { font-size: 0.78rem; padding: 3px 9px; border-radius: 999px; font-weight: 600; }
   .badge-today { background: var(--primary); color: var(--white); }
   .badge-past { background: var(--disabled); color: var(--white); }
   .badge-reserved { background: var(--veg); color: var(--white); }
@@ -551,28 +929,30 @@
   .day-menus {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 7px;
+    flex-grow: 1;
   }
 
   .day-menu-row {
     display: grid;
-    grid-template-columns: 58px minmax(0, 1fr);
+    grid-template-columns: 66px minmax(0, 1fr);
     align-items: start;
-    gap: 6px;
-    padding: 6px 7px;
-    border-radius: 6px;
+    gap: 8px;
+    padding: 7px 9px;
+    border-radius: 7px;
     background: var(--bg-panel);
+    min-height: 52px;
   }
 
   .day-menu-label {
-    font-size: 0.68rem;
+    font-size: 0.78rem;
     font-weight: 700;
     color: var(--ink-soft);
   }
 
   .day-menu-dish {
-    font-size: 0.76rem;
-    line-height: 1.3;
+    font-size: 0.85rem;
+    line-height: 1.35;
     color: var(--ink);
   }
 
@@ -592,112 +972,249 @@
     color: var(--hipo);
   }
 
-  .day-actions { display: flex; gap: 6px; flex-wrap: wrap; }
-  .toggle {
-    flex: 1;
+  /* Footer unificado para alinear todos los controles inferiores */
+  .day-card-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
     min-width: 0;
-    padding: 6px 4px;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    background: transparent;
-    transition: background .15s ease, color .15s ease;
-    font-family: inherit;
-    display: inline-flex;
+    box-sizing: border-box;
+  }
+
+  .day-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .day-actions-placeholder {
+    height: 54px;
+  }
+
+  .toggle {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 3px;
+    height: 54px;
+    padding: 5px 3px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: transparent;
+    transition: background .15s ease, color .15s ease, transform .15s ease, box-shadow .15s ease;
+    font-family: inherit;
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
   }
+
+  .toggle .toggle-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .toggle .toggle-text {
+    font-size: 0.74rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+  }
+
   .toggle-veg { border: 1.5px solid var(--veg); color: var(--veg); }
   .toggle-veg.active { background: var(--veg); color: var(--white); }
   .toggle-hipo { border: 1.5px solid var(--hipo); color: var(--hipo); }
   .toggle-hipo.active { background: var(--hipo); color: var(--white); }
   .toggle.pending { outline: 2px dashed currentColor; outline-offset: 2px; }
+
   /* Efecto de elevación al pasar el cursor */
   .toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
   }
 
   .toggle-veg:hover:not(.active) {
-  background: var(--veg-soft);
+    background: var(--veg-soft);
   }
 
   .toggle-hipo:hover:not(.active) {
-  background: var(--hipo-soft);
+    background: var(--hipo-soft);
   }
 
   .toggle:active {
-  transform: translateY(0);
-  box-shadow: none;
+    transform: translateY(0);
+    box-shadow: none;
   }
-  .day-status { margin: 0; font-size: 0.75rem; color: var(--ink-soft); }
+
+  .day-status {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.25;
+  }
 
   .expand-btn {
-    margin-top: 2px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
     width: 100%;
-    padding: 7px 6px;
+    padding: 6px 10px;
     background: var(--bg-panel);
     border: none;
     border-radius: 6px;
     color: var(--primary);
-    font-size: 0.78rem;
+    font-size: 0.84rem;
     font-weight: 600;
     cursor: pointer;
     font-family: inherit;
+    transition: background 0.15s ease;
+    box-sizing: border-box;
   }
-  .expand-btn .chev { transition: transform .2s ease; }
-  .expand-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .expand-btn:hover { background: #dce1d0; }
+  .expand-btn .chev { transform: rotate(180deg); transition: transform .2s ease; }
+  .expand-btn[aria-expanded="true"] .chev { transform: rotate(0); }
+  .expand-btn[aria-expanded="true"] { background: var(--primary-soft); }
 
-  /* ---------- Panel Expandido ---------- */
-  .day-detail {
-    margin-top: 4px;
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+  /* ---------- Minuta superpuesta ---------- */
+  .day-detail-popover {
+    position: fixed;
+    z-index: 80;
+    visibility: hidden;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--white);
+    box-shadow: 0 12px 40px rgba(30,42,38,0.24);
+    animation: day-detail-enter .18s ease-out;
   }
-  .menu-block h3, .nutrition-block h3 {
-    font-size: 0.75rem; font-weight: 600; color: var(--ink-soft);
-    font-family: var(--sans); margin: 0 0 6px;
+
+  @keyframes day-detail-enter {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .day-detail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 660px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--white);
+    transform-origin: top left;
+  }
+
+  .day-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .day-detail-header h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    line-height: 1.4;
+    color: var(--primary);
+  }
+
+  .day-detail-close {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-panel);
+    color: var(--ink);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .day-detail-close:hover { background: var(--primary-soft); }
+
+  .day-detail-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .day-detail h4 {
+    font-size: 0.84rem; font-weight: 700; color: var(--ink-soft);
+    font-family: var(--sans); margin: 0 0 10px;
     text-transform: uppercase; letter-spacing: 0.04em;
   }
-  .menu-block dl {
+  .day-detail .menu-block dl {
     display: grid;
-    grid-template-columns: 80px 1fr;
-    row-gap: 6px;
-    column-gap: 8px;
+    grid-template-columns: 84px minmax(0, 1fr);
+    row-gap: 8px;
+    column-gap: 10px;
     margin: 0;
   }
-  .menu-block dt { font-size: 0.74rem; color: var(--ink-soft); font-weight: 600; }
-  .menu-block dd { margin: 0; font-size: 0.8rem; }
+  .day-detail .menu-block dt { font-size: 0.84rem; color: var(--ink-soft); font-weight: 600; }
+  .day-detail .menu-block dd { margin: 0; font-size: 0.92rem; line-height: 1.45; overflow-wrap: anywhere; }
 
-  .nutrition-tabs {
-    display: flex; gap: 4px; margin-bottom: 10px;
+  .day-detail .nutrition-tabs {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin-bottom: 14px;
     background: var(--bg-panel); padding: 3px; border-radius: 6px;
   }
-  .tab-btn {
-    flex: 1; border: none; background: transparent;
-    padding: 7px 4px; font-size: 0.78rem; font-weight: 600;
+  .day-detail .tab-btn {
+    min-width: 0; border: none; background: transparent;
+    padding: 8px 4px; font-size: 0.8rem; font-weight: 600;
     color: var(--ink-soft); border-radius: 4px; cursor: pointer;
     font-family: inherit;
   }
-  .tab-btn.active { background: var(--white); color: var(--ink); }
+  .day-detail .tab-btn.active { background: var(--white); color: var(--ink); }
 
-  .kcal-value { font-family: var(--serif); font-size: 1.25rem; font-weight: 600; margin-bottom: 6px; }
-  .kcal-value span { font-family: var(--sans); font-size: 0.75rem; font-weight: 500; color: var(--ink-soft); }
+  .day-detail .nutrition-values {
+    padding: 14px;
+    border-radius: 8px;
+    background: var(--primary-soft);
+  }
 
-  .macro-row { display: grid; grid-template-columns: 80px 1fr 36px; align-items: center; gap: 6px; margin-bottom: 4px; }
-  .macro-label { font-size: 0.72rem; color: var(--ink-soft); }
-  .macro-val { font-size: 0.72rem; text-align: right; }
-  .bar { height: 5px; background: var(--bg-panel); border-radius: 3px; overflow: hidden; }
-  .bar span { display: block; height: 100%; background: var(--primary); border-radius: 3px; }
+  .day-detail .kcal-value { font-family: var(--serif); font-size: 2rem; font-weight: 700; margin-bottom: 18px; line-height: 1.1; }
+  .day-detail .kcal-value span { font-family: var(--sans); font-size: 0.9rem; font-weight: 500; color: var(--ink-soft); }
+
+  .day-detail .macro-row { display: grid; grid-template-columns: 96px minmax(0, 1fr) 44px; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .day-detail .macro-label { font-size: 0.84rem; color: var(--ink-soft); }
+  .day-detail .macro-val { font-size: 0.9rem; text-align: right; font-weight: 600; }
+  .day-detail .bar { height: 6px; background: var(--bg-panel); border-radius: 3px; overflow: hidden; }
+  .day-detail .bar span { display: block; height: 100%; background: var(--primary); border-radius: 3px; }
+
+  @media (max-width: 680px) {
+    .day-detail { padding: 16px; }
+    .day-detail-body { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .day-detail-popover { animation: none; }
+  }
 
   /* ---------- Barra Resumen Inferior ---------- */
   .summary-bar {

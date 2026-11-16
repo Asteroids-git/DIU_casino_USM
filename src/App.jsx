@@ -29,11 +29,34 @@ export default function App() {
 
   const [weeks, setWeeks] = useState(() => {
     const saved = localStorage.getItem('casino_weeks');
-    return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(INITIAL_WEEKS));
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Si las semanas guardadas son de un rango anterior o ya pasaron, renovar con INITIAL_WEEKS
+        const isUpToDate =
+          parsed[0]?.range === INITIAL_WEEKS[0].range &&
+          parsed.some((w) => w.days.some((d) => !isPast(d.dateStr)));
+        if (isUpToDate) return parsed;
+      } catch (e) {
+        console.error('Error al parsear casino_weeks de localStorage', e);
+      }
+    }
+    return JSON.parse(JSON.stringify(INITIAL_WEEKS));
   });
   const [reservations, setReservations] = useState(() => {
     const saved = localStorage.getItem('casino_reservations');
-    return saved ? JSON.parse(saved) : [];
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        const dayMap = new Map(
+          INITIAL_WEEKS.flatMap((w) => w.days.map((d) => [d.id, d.dateStr]))
+        );
+        return parsed.filter((r) => dayMap.get(r.dayId) === r.fechaDesde);
+      } catch (e) {
+        console.error('Error al parsear casino_reservations de localStorage', e);
+      }
+    }
+    return [];
   });
   const [consumptions] = useState(INITIAL_CONSUMPTIONS);
 
@@ -204,7 +227,9 @@ export default function App() {
       prevWeeks.map((week) => ({
         ...week,
         days: week.days.map((day) =>
-          day.id === dayId ? { ...day, expanded: !day.expanded } : day
+          day.id === dayId
+            ? { ...day, expanded: !day.expanded }
+            : day.expanded ? { ...day, expanded: false } : day
         ),
       }))
     );
@@ -323,10 +348,6 @@ export default function App() {
     if (changeCount)
       parts.push(`${changeCount} cambio${changeCount !== 1 ? 's' : ''}`);
     showToast(`Reservas actualizadas: ${parts.join(', ')}.`, 'success');
-
-    setTimeout(() => {
-      setActiveTab('view-mis-reservas');
-    }, 600);
   };
 
   const handleCancelReservation = (resId, dayId) => {
@@ -364,7 +385,7 @@ export default function App() {
           />
 
           <div className="wrap">
-            {activeTab === 'view-reserva' && (
+            {(activeTab === 'view-reserva' || activeTab === 'view-mis-reservas') && (
               <ReservaView
                 weeks={weeks}
                 dragState={dragState}
@@ -377,15 +398,9 @@ export default function App() {
                 onConfirmReservations={handleConfirmReservations}
                 onDragStart={handleDragStart}
                 onDragEnter={handleDragEnter}
-              />
-            )}
-
-            {activeTab === 'view-mis-reservas' && (
-              <MisReservasView
                 reservations={reservations}
                 totalAlmuerzos={totalAlmuerzos}
                 onCancelReservation={handleCancelReservation}
-                onGoToReserva={() => setActiveTab('view-reserva')}
               />
             )}
 

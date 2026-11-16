@@ -7,13 +7,13 @@ export const MAX_NUTRITION = {
 export const INITIAL_WEEKS = [
   {
     label: 'Semana actual',
-    range: '09 – 13 nov 2026',
+    range: '16 – 20 nov 2026',
     days: [
       {
         id: 'd0',
         name: 'Lunes',
-        num: '09/11',
-        dateStr: '09-11-2026',
+        num: '16/11',
+        dateStr: '16-11-2026',
         menu: {
           sopa: 'Crema de zapallo',
           entrada: 'Ensalada de apio, espinaca y zanahoria',
@@ -36,8 +36,8 @@ export const INITIAL_WEEKS = [
       {
         id: 'd1',
         name: 'Martes',
-        num: '10/11',
-        dateStr: '10-11-2026',
+        num: '17/11',
+        dateStr: '17-11-2026',
         menu: {
           sopa: 'Crema de pollo',
           entrada: 'Ensalada toscana',
@@ -60,8 +60,8 @@ export const INITIAL_WEEKS = [
       {
         id: 'd2',
         name: 'Miércoles',
-        num: '11/11',
-        dateStr: '11-11-2026',
+        num: '18/11',
+        dateStr: '18-11-2026',
         menu: {
           sopa: 'Sopa de carne con sémola',
           entrada: 'Ensalada de lechuga, porotos verdes y zanahoria',
@@ -84,8 +84,8 @@ export const INITIAL_WEEKS = [
       {
         id: 'd3',
         name: 'Jueves',
-        num: '12/11',
-        dateStr: '12-11-2026',
+        num: '19/11',
+        dateStr: '19-11-2026',
         menu: {
           sopa: 'Crema de choclo',
           entrada: 'Ensalada chilena',
@@ -108,8 +108,8 @@ export const INITIAL_WEEKS = [
       {
         id: 'd4',
         name: 'Viernes',
-        num: '13/11',
-        dateStr: '13-11-2026',
+        num: '20/11',
+        dateStr: '20-11-2026',
         menu: {
           sopa: 'Consomé de vacuno',
           entrada: 'Ensalada de repollo, apio y pimentón',
@@ -133,13 +133,13 @@ export const INITIAL_WEEKS = [
   },
   {
     label: 'Próxima semana',
-    range: '16 – 20 nov 2026',
+    range: '23 – 27 nov 2026',
     days: [
       {
         id: 'd5',
         name: 'Lunes',
-        num: '16/11',
-        dateStr: '16-11-2026',
+        num: '23/11',
+        dateStr: '23-11-2026',
         menu: {
           sopa: 'Crema de espárragos',
           entrada: 'Ensalada de apio, espinaca y zanahoria',
@@ -161,8 +161,8 @@ export const INITIAL_WEEKS = [
       {
         id: 'd6',
         name: 'Martes',
-        num: '17/11',
-        dateStr: '17-11-2026',
+        num: '24/11',
+        dateStr: '24-11-2026',
         menu: {
           sopa: 'Crema de choclo',
           entrada: 'Ensalada de lechuga, choclo y pimentón',
@@ -184,8 +184,8 @@ export const INITIAL_WEEKS = [
       {
         id: 'd7',
         name: 'Miércoles',
-        num: '18/11',
-        dateStr: '18-11-2026',
+        num: '25/11',
+        dateStr: '25-11-2026',
         menu: {
           sopa: '—',
           entrada: 'Ensalada mix toscana',
@@ -207,8 +207,8 @@ export const INITIAL_WEEKS = [
       {
         id: 'd8',
         name: 'Jueves',
-        num: '19/11',
-        dateStr: '19-11-2026',
+        num: '26/11',
+        dateStr: '26-11-2026',
         menu: {
           sopa: 'Sopa de pollo con sémola',
           entrada: 'Ensalada de lechuga, pepino y aceituna',
@@ -230,8 +230,8 @@ export const INITIAL_WEEKS = [
       {
         id: 'd9',
         name: 'Viernes',
-        num: '20/11',
-        dateStr: '20-11-2026',
+        num: '27/11',
+        dateStr: '27-11-2026',
         menu: {
           sopa: 'Consomé de vacuno',
           entrada: 'Ensalada de repollo, zanahoria y palmitos',

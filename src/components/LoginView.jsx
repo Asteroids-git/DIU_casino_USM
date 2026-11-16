@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 
 export default function LoginView({ onLogin, showToast }) {
+  const containerRef = useRef(null);
+  const boxRef = useRef(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [usernameError, setUsernameError] = useState('');
@@ -11,6 +13,53 @@ export default function LoginView({ onLogin, showToast }) {
   const [hipoStock, setHipoStock] = useState(8);
   const [vegScale, setVegScale] = useState(false);
   const [hipoScale, setHipoScale] = useState(false);
+
+  useLayoutEffect(() => {
+    const container = containerRef.current;
+    const box = boxRef.current;
+    let animationFrame = 0;
+
+    const fitToViewport = () => {
+      const containerStyle = getComputedStyle(container);
+      const boxStyle = getComputedStyle(box);
+      const availableWidth = container.clientWidth
+        - parseFloat(containerStyle.paddingLeft) - parseFloat(containerStyle.paddingRight) - 2;
+      const availableHeight = container.clientHeight
+        - parseFloat(containerStyle.paddingTop) - parseFloat(containerStyle.paddingBottom) - 2;
+      if (availableWidth <= 0 || availableHeight <= 0) return;
+
+      const width = `${Math.min(parseFloat(boxStyle.maxWidth), availableWidth)}px`;
+      if (box.style.width !== width) box.style.width = width;
+
+      const preferredScale = parseFloat(boxStyle.getPropertyValue('--login-preferred-scale'));
+      const scale = Math.min(
+        preferredScale,
+        availableWidth / box.offsetWidth,
+        availableHeight / box.offsetHeight,
+      );
+      const fittedScale = String(Math.floor(scale * 1000) / 1000);
+      if (box.style.getPropertyValue('--login-scale') !== fittedScale) {
+        box.style.setProperty('--login-scale', fittedScale);
+      }
+    };
+
+    const scheduleFit = () => {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(fitToViewport);
+    };
+
+    fitToViewport();
+    const observer = new ResizeObserver(scheduleFit);
+    observer.observe(container);
+    observer.observe(box);
+    window.addEventListener('resize', scheduleFit);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(animationFrame);
+      window.removeEventListener('resize', scheduleFit);
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -87,11 +136,11 @@ export default function LoginView({ onLogin, showToast }) {
   };
 
   return (
-    <div id="login-view" className="login-container">
-      <div className="login-box">
+    <div id="login-view" className="login-container" ref={containerRef}>
+      <div className="login-box" ref={boxRef}>
         <h2>Sistema Casino USM</h2>
         <p className="sub">
-          Inicia sesión para gestionar tus reservas o ver qué hay de bueno
+          Inicia sesión para gestionar tus reservas y ver los menús disponibles de esta semana
         </p>
 
         <form id="login-form" onSubmit={handleSubmit} noValidate>
@@ -152,8 +201,7 @@ export default function LoginView({ onLogin, showToast }) {
 
         <div className="live-stock-section">
           <div className="live-stock-title">
-            <span className="pulse-dot" aria-hidden="true"></span> Platos
-            especiales disponibles hoy
+            <span className="pulse-dot" aria-hidden="true"></span> Disponibilidad de platos especiales
           </div>
           <div className="stock-grid">
             <div

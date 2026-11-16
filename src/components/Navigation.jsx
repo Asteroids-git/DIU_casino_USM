@@ -9,16 +9,10 @@ export default function Navigation({
   return (
     <nav className="main-nav" aria-label="Navegación principal">
       <button
-        className={`nav-btn ${activeTab === 'view-reserva' ? 'active' : ''}`}
+        className={`nav-btn ${activeTab === 'view-reserva' || activeTab === 'view-mis-reservas' ? 'active' : ''}`}
         onClick={() => onTabChange('view-reserva')}
       >
         Reserva de menú
-      </button>
-      <button
-        className={`nav-btn ${activeTab === 'view-mis-reservas' ? 'active' : ''}`}
-        onClick={() => onTabChange('view-mis-reservas')}
-      >
-        Mis reservas
       </button>
       <button
         className={`nav-btn ${activeTab === 'view-mis-consumos' ? 'active' : ''}`}
